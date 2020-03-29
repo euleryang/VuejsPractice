@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>You Don't Know Vuejs - Chapter 1-2</title>
+</head>
+<body>
+  <h2>Demo1:data</h2>
+  <div id="app1">
+    <button v-on:click="addItem">添加</button>
+    <ul>
+      <li v-for="item in list" >
+        <a v-bind:href="item.url">{{ item.name }}</a>
+      </li>
+    </ul>
+  </div>
+  <hr/>
+
+  <h2>Demo2:</h2>
+  <div id="app2">
+    <button v-on:click="addItem">添加</button>
+    <ul>
+      <li v-for="item in list" v-bind:key="item.name">
+        <a v-bind:href="item.url">{{ item.name }}</a>
+      </li>
+    </ul>
+  </div>
+  <hr/>
+
+  <h2>Demo3:</h2>
+  <div id="app3">
+    <button v-on:click="changeName">改变姓名</button>
+    <h4>{{ username }}</h4>
+  </div>
+  <hr/>
+
+  <h2>Demo4:</h2>
+  <div id="app4">
+    <button v-on:click="changeName">改变姓名</button>
+    <h4>{{ username }}</h4>
+  </div>
+  <hr/>
+
+  <h2>Demo5:</h2>
+  <div id="app5">
+    <button v-on:click="changeName">改变姓名</button>
+    <h4>{{ username }}</h4>
+  </div>
+  <hr/>
+
+  <h2>Demo6:</h2>
+  <div id="app6">
+    <button v-on:click="changeName">改变姓氏</button>
+    <h4>{{ username }}</h4>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script>
+    // demo 1
+    var app1 = new Vue({
+      el: "#app1",
+      data () {
+        return {
+          count: 1,
+          list: [
+            {
+              name: 'Vuejs官网',
+              url: 'https://cn.vuejs.org'
+            },
+            {
+              name: 'Github',
+              url: 'https://github.com'
+            },
+            {
+              name: 'Yuga博客1',
+              url: 'https://yugasun.com'
+            }
+          ]
+        }
+      },
+      methods: {
+        addItem () {
+          this.count++
+          this.list.push({
+            name: 'Yuga博客' + this.count,
+            url: 'https://yugasun.com'
+          })
+        }
+      }
+    })
+    
+    // demo 2
+    var app2 = new Vue({
+        el: "#app2",
+        data () {
+            return {
+                count: 1,
+                requestList: [
+                    'Vuejs官网-https://cn.vuejs.org',
+                    'Github-https://github.com',
+                    'SamYang博客1-https://euleryang.github.io'
+                ]
+            }
+        },
+        computed: {
+            list: function() {
+                var list = [];
+                this.requestList.map(function(item, index) {
+                    var tempArr = item.split('-');
+                    list.push({
+                        name: tempArr[0],
+                        url: tempArr[1]
+                    });
+                })
+                return list;
+            }
+        },
+        methods: {
+            addItem () {
+            this.count++
+            this.requestList.push('SamYang博客' + this.count +'-https://euleryang.github.io')
+            }
+        }
+    })
+
+    var app3 = new Vue({
+        el: "#app3",
+        data () {
+            return {
+            firstName: 'Sam',
+            lastName: 'Yang'
+            }
+        },
+        computed: {
+            username: {
+            get: function() {
+                return this.firstName + ' ' + this.lastName;
+            },
+            set: function(newVal) {
+                var names = newVal.split(' ');
+                this.firstName = names[0];
+                this.lastName = names[1];
+            }
+            }
+        },
+        methods: {
+            changeName () {
+            if (this.username === 'Sam Yang'){
+                this.username = 'Huan Yang';
+            } else {
+                this.username = 'Sam Yang';
+            }
+            }
+        }
+    })
+
+    var app4 = new Vue({
+        el: "#app4",
+        data () {
+            return {
+            firstName: 'Sam',
+            lastName: 'Yang',
+            username: 'Sam Yang'
+            }
+        },
+        watch: {
+            firstName: function(val, oldVal) {
+            this.username = val + ' ' + this.lastName;
+            },
+            lastName: function(val, oldVal) {
+            this.username = this.firstName + ' ' + val;
+            }
+        },
+        methods: {
+            changeName () {
+            if (this.username === 'Sam Yang'){
+                this.firstName = 'Huan';
+                this.lastName = 'Yang';
+            } else {
+                this.firstName = 'Sam';
+                this.lastName = 'Yang';
+            }
+            }
+        }
+    })
+
+    var app5 = new Vue({
+        el: "#app5",
+        data () {
+            return {
+            userinfo: {
+                firstName: 'Sam',
+                lastName: 'Yang',
+            },
+            username: 'Sam Yang'
+            }
+        },
+        watch: {
+            userinfo: {
+                deep: true,
+            handler: function(val, oldVal) {
+                this.username = val.firstName + ' ' + val.lastName;
+                }
+            }
+        },
+        methods: {
+            changeName () {
+            if (this.username === 'Sam Yang'){
+                this.userinfo.firstName = 'Huan';
+                this.userinfo.lastName = 'Yang';
+            } else {
+                this.userinfo.firstName = 'Sam';
+                this.userinfo.lastName = 'Yang';
+            }
+            }
+        }
+    })
+
+    var app6 = new Vue({
+    el: "#app6",
+    data () {
+        return {
+        userinfo: {
+            firstName: 'Sam',
+            lastName: 'Yang',
+        },
+        username: 'Sam Yang'
+        }
+    },
+    watch: {
+        'userinfo.firstName': function(val, oldVal) {
+        this.username = val + ' ' + this.userinfo.lastName;
+        },
+        'userinfo.lastName': function(val, oldVal) {
+        this.username = this.userinfo.firstName + ' ' + val;
+        }
+    },
+    methods: {
+        changeName () {
+        if (this.username === 'Sam Yang'){
+            this.userinfo.firstName = 'Huan';
+            this.userinfo.lastName = 'Yang';
+        } else {
+            this.userinfo.firstName = 'Sam';
+            this.userinfo.lastName = 'Yang';
+        }
+        }
+    }
+    })
+
+  </script>
+</body>
+</html>

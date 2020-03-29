@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>You Don't Konw Vuejs - Chapter 1-1</title>
+</head>
+<body>
+  <div id="app1"></div>
+  <div id="app2"></div>
+  <div id="app3"></div>
+  <div id="app4"></div>
+  <div id="app5" v-helloworld='msg'></div>
+  <div id="app6"></div>
+  <div id="app7"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+  <script >
+
+    var app1 = new Vue({
+      el: "#app1",
+      template: "<h1>{{msg}} Hello Vue.js</h1>",
+      data () {
+        return {
+          msg: "Hello world!"
+        }
+      }
+    });
+
+    var app2 = Vue.extend({
+      template: "<h1>{{msg}}</h1>",
+      data () {
+          return {
+              msg: "Hello Vuejs!"
+          }
+      }
+
+    })
+    new app2().$mount("#app2")
+
+    var app3 = Vue.component('helloworld', {
+      template: "<h1>{{msg}}</h1>",
+      data () {
+          return {
+              msg: "Hello Vuejs!"
+          }
+      }
+
+    })
+    new app3().$mount("#app3")
+
+    // app3中已经注册该组件
+    Vue.component("helloworld", {
+      template: "<h1>{{ msg }}</h1>",
+      data () {
+        return {
+          msg: "Hello Vue.js!"
+        }
+      }
+    })
+    new Vue({
+        el: '#app4',
+        template: "<helloworld/>"
+    })
+
+    Vue.directive("helloworld", {
+      bind: function (el, binding) {
+        el.innerHTML = "<h1>"+ binding.value +"</h1>"
+      }
+    })
+    var app5 = new Vue({
+      el: "#app5",
+      data () {
+        return {
+          msg: "Hello Vue.js!"
+        }
+      }
+    })
+	
+	var tpl = Vue.compile('<h1>{{ msg }}</h1>')
+	new Vue({
+		el: "#app6",
+	  data () {
+		return {
+			msg: "Hello Vue.js6!"
+		}
+	  },
+	  render: tpl.render
+	})
+	
+	new Vue({
+	el: "#app7",
+	  data () {
+		return {
+			msg: "Hello Vue.js6!"
+		}
+	  },
+	  render: function (createElement) {
+		return createElement('h1', this.msg)
+	  }
+	})
+  </script>
+</body>
+</html>
