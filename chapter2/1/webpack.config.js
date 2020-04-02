@@ -5,7 +5,7 @@ module.exports = {
   entry: './src/app.js',
   // 编译输出文件
   output: {
-    path: path.join(__dirname, "./dist"),
+    path: path.join(__dirname, "./dist1"),
     filename: 'build.js'
   },
   resolve: {
@@ -32,7 +32,7 @@ module.exports = {
             loader: 'style-loader',
           },
           {
-            loader: 'css-loaser',
+            loader: 'css-loader',
           },
           {
             loader: 'sass-loader'
