@@ -21,5 +21,30 @@ module.exports = {
     port: 8080,
     // 这里定义 webpack-dev-server 开启的web服务的根目录
     contentBase: './'
+  },
+
+  module: {
+    rules: [
+      {
+        test: /\.scss$/,
+        use: [
+          {
+            loader: 'style-loader',
+          },
+          {
+            loader: 'css-loaser',
+          },
+          {
+            loader: 'sass-loader'
+          }
+        ]
+      },
+      {
+        test: /\.(jpe?g|gif|png)$/,
+        use: 'url-loader'
+      }
+    ]
   }
+
+
 }
